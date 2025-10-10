@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   MapContainer,
   TileLayer,
@@ -7,31 +7,44 @@ import {
   useMapEvents,
 } from "react-leaflet";
 
-function LocationMarker({ setCoords }) {
+// small helper to select location by click
+function ClickSelector({ onChange }) {
   useMapEvents({
     click(e) {
-      setCoords([e.latlng.lat, e.latlng.lng]);
+      onChange([e.latlng.lat, e.latlng.lng]);
     },
   });
   return null;
 }
 
-const MapComponent = ({ coords, setCoords }) => {
+/**
+ * Props:
+ *  - coords: [lat, lng] or null
+ *  - setCoords: function to set coords
+ *  - height: css height (default 350px)
+ *  - center: initial center (default Delhi)
+ */
+export default function MapComponent({
+  coords,
+  setCoords,
+  height = "350px",
+  center = [28.6139, 77.209],
+}) {
   return (
-    <MapContainer
-      center={coords || [28.6139, 77.209]}
-      zoom={13}
-      style={{ height: "400px", width: "100%" }}
-    >
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {coords && (
-        <Marker position={coords}>
-          <Popup>Selected location</Popup>
-        </Marker>
-      )}
-      <LocationMarker setCoords={setCoords} />
-    </MapContainer>
+    <div style={{ width: "100%", height }}>
+      <MapContainer
+        center={coords || center}
+        zoom={13}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        {coords && (
+          <Marker position={coords}>
+            <Popup>Selected</Popup>
+          </Marker>
+        )}
+        <ClickSelector onChange={setCoords} />
+      </MapContainer>
+    </div>
   );
-};
-
-export default MapComponent;
+}
