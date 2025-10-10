@@ -1,0 +1,19 @@
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, Roboto, sans-serif;
+}
+
+/* Leaflet map marker fix for Vite */
+.leaflet-container {
+  z-index: 0;
+}
+
+/* small responsive tweaks */
+@media (max-width: 900px) {
+  .leaflet-container {
+    height: 300px !important;
+  }
+}
