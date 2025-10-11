@@ -1,0 +1,75 @@
+.home-container {
+  font-family: "Inter", sans-serif;
+}
+
+.hero {
+  padding: 3.5rem 3rem 2.5rem 3rem;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 6.5rem;
+  font-weight: 700;
+}
+
+.ride-inputs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.ride-inputs input {
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  width: 180px;
+}
+
+.ride-inputs button {
+  background: black;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.4rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.suggestions {
+  padding: 4rem 22rem;
+}
+
+.suggestions h2 {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.suggestion-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.card-text h3 {
+  margin-bottom: 0.6rem;
+}
+
+.card-text button {
+  background: black;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}

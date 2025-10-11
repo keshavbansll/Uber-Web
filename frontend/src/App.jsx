@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import RiderDashboard from "./pages/RiderDashboard";
 import DriverDashboard from "./pages/DriverDashboard";
 import NavBar from "./components/NavBar";
+import Home from "./pages/Home";
 
 const getAuth = () => {
   const token = localStorage.getItem("token");
@@ -24,6 +25,7 @@ export default function App() {
     <>
       <NavBar />
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/" element={<Navigate to="/rider" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
