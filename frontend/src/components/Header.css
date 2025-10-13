@@ -1,0 +1,154 @@
+.header {
+  background-color: #000;
+  color: #fff;
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.nav-link:hover {
+  opacity: 0.8;
+}
+
+.dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dropdown-arrow {
+  font-size: 12px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 16px;
+  background: #fff;
+  color: #000;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  padding: 8px 0;
+  z-index: 1001;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 12px 20px;
+  color: #000;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f6f6f6;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.language-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.globe-icon {
+  font-size: 20px;
+}
+
+.header-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.header-link:hover {
+  opacity: 0.8;
+}
+
+.header-link-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.header-link-btn:hover {
+  opacity: 0.8;
+}
+
+.signup-btn {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.signup-btn:hover {
+  background-color: #f6f6f6;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .header-right {
+    gap: 16px;
+  }
+}

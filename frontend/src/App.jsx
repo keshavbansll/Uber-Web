@@ -1,11 +1,11 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import RiderDashboard from "./pages/RiderDashboard";
 import DriverDashboard from "./pages/DriverDashboard";
 import NavBar from "./components/NavBar";
-import Home from "./pages/Home";
 
 const getAuth = () => {
   const token = localStorage.getItem("token");
@@ -23,17 +23,18 @@ const Protected = ({ children, role }) => {
 export default function App() {
   return (
     <>
-      <NavBar />
       <Routes>
+        {/* Public Home Page */}
         <Route path="/" element={<Home />} />
-        <Route path="/" element={<Navigate to="/rider" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
+        {/* Protected Routes */}
         <Route
           path="/rider"
           element={
             <Protected role="rider">
+              <NavBar />
               <RiderDashboard />
             </Protected>
           }
@@ -43,6 +44,7 @@ export default function App() {
           path="/driver"
           element={
             <Protected role="driver">
+              <NavBar />
               <DriverDashboard />
             </Protected>
           }

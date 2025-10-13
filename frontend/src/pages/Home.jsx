@@ -1,44 +1,23 @@
 import React from "react";
+import Header from "../components/Header";
+import HeroSection from "../components/HeroSection";
+import Suggestions from "../components/Suggestions";
+import DriverSection from "../components/DriverSection";
+import BusinessSection from "../components/BusinessSection";
+import AppDownload from "../components/AppDownload";
+import Footer from "../components/Footer";
 import "./Home.css";
 
-const Home = () => {
+export default function Home() {
   return (
-    <div className="home-container">
-      <section className="hero">
-        <h1>Go anywhere with Uber</h1>
-
-        <div className="ride-inputs">
-          <input type="text" placeholder="Pickup location" />
-          <input type="text" placeholder="Dropoff location" />
-          <input type="date" />
-          <input type="time" />
-          <button>See prices</button>
-        </div>
-      </section>
-
-      <section className="suggestions">
-        <h2>Suggestions</h2>
-        <div className="suggestion-grid">
-          {[
-            { title: "Ride", desc: "Request a ride, hop in, and go." },
-            { title: "Reserve", desc: "Plan your ride in advance." },
-            { title: "Intercity", desc: "Affordable outstation cabs." },
-            { title: "Courier", desc: "Same-day item delivery." },
-            { title: "Rentals", desc: "Hire a car by the hour." },
-            { title: "Bike", desc: "Two-wheeler rides nearby." },
-          ].map((card) => (
-            <div className="card" key={card.title}>
-              <div className="card-text">
-                <h3>{card.title}</h3>
-                <p>{card.desc}</p>
-                <button>Details</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+    <div className="home">
+      <Header />
+      <HeroSection />
+      <Suggestions />
+      <DriverSection />
+      <BusinessSection />
+      <AppDownload />
+      <Footer />
     </div>
   );
-};
-
-export default Home;
+}

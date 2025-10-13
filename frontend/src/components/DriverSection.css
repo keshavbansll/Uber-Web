@@ -1,0 +1,170 @@
+.driver-section {
+  padding: 80px 24px;
+  background-color: #fff;
+}
+
+.driver-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.driver-image {
+  position: relative;
+}
+
+.driver-illustration {
+  width: 100%;
+  height: 500px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #ffd700 2px, transparent 2px),
+    radial-gradient(circle, #ff6b6b 2px, transparent 2px),
+    radial-gradient(circle, #4ecdc4 2px, transparent 2px),
+    radial-gradient(circle, #95e1d3 2px, transparent 2px);
+  background-size: 50px 50px, 80px 80px, 60px 60px, 40px 40px;
+  background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+  animation: confetti-fall 15s linear infinite;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-10%);
+  }
+  100% {
+    transform: translateY(10%);
+  }
+}
+
+.driver-scene {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.car {
+  width: 200px;
+  height: 80px;
+  background: #fff;
+  border-radius: 10px 10px 5px 5px;
+  position: relative;
+}
+
+.car::before {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 30px;
+  width: 30px;
+  height: 30px;
+  background: #333;
+  border-radius: 50%;
+}
+
+.car::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  right: 30px;
+  width: 30px;
+  height: 30px;
+  background: #333;
+  border-radius: 50%;
+}
+
+.person {
+  width: 60px;
+  height: 120px;
+  background: linear-gradient(to bottom, #87ceeb 50%, #333 50%);
+  border-radius: 30px 30px 0 0;
+  position: relative;
+}
+
+.person::before {
+  content: "";
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background: #f4a460;
+  border-radius: 50%;
+}
+
+.driver-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.driver-title {
+  font-size: 42px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.2;
+}
+
+.driver-description {
+  font-size: 18px;
+  color: #545454;
+  line-height: 1.6;
+}
+
+.driver-cta-btn {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 16px 40px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.2s;
+}
+
+.driver-cta-btn:hover {
+  background-color: #333;
+}
+
+.driver-learn-more {
+  color: #000;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.driver-learn-more:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 968px) {
+  .driver-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .driver-title {
+    font-size: 32px;
+  }
+
+  .driver-illustration {
+    height: 400px;
+  }
+}
