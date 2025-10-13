@@ -1,0 +1,41 @@
+.navbar {
+  font-family: "Plus Jakarta Sans";
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #000;
+  color: white;
+  padding: 0.8rem 20rem;
+  font-family: "Inter", sans-serif;
+  position: fixed;
+  width: 100%;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  margin-right: 1.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.navbar a:hover {
+  color: #ccc;
+}
+
+.logo {
+  font-size: 5rem;
+  font-weight: 700;
+}
+
+.signup-btn {
+  background: white;
+  color: black !important;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.signup-btn:hover {
+  background: #e5e5e5;
+}
