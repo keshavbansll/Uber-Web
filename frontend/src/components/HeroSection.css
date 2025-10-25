@@ -1,46 +1,85 @@
+/* --------------------------
+   Hero section (right-attached map panel)
+   -------------------------- */
+
+:root {
+  --hero-bg: #f6f6f6;
+  --card-bg: #ffffff;
+  --muted: #6b6b6b;
+  --black: #000000;
+}
+
+/* Container for the full hero */
 .hero-section {
-  background-color: #f6f6f6;
-  padding: 80px 24px 120px;
+  position: relative;
+  background-color: var(--hero-bg);
+  height: 100vh; /* full viewport height */
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial;
 }
 
-.hero-container {
-  max-width: 1280px;
-  margin: 0 auto;
+/* Split layout: left content + right map panel */
+.hero-content {
+  display: flex;
+  width: 100%;
+  height: 100%;
 }
 
+/* LEFT: heading plus booking card area */
+.hero-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  padding-left: 80px;
+  box-sizing: border-box;
+}
+
+.hero-left-inner {
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Title */
 .hero-title {
   font-size: 52px;
   font-weight: 700;
-  margin-bottom: 48px;
-  color: #000;
+  margin: 0 0 32px 0;
+  color: var(--black);
+  line-height: 1.05;
 }
 
+/* Booking card */
 .booking-card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
   overflow: hidden;
+  width: 100%;
 }
 
 .booking-form {
-  padding: 32px;
+  padding: 28px;
 }
 
+/* Input groups */
 .input-group {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px;
-  background: #f6f6f6;
+  padding: 14px;
+  background: #fbfbfb;
   border-radius: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .location-dot {
   width: 12px;
   height: 12px;
-  background-color: #000;
+  background-color: var(--black);
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -48,7 +87,7 @@
 .location-square {
   width: 12px;
   height: 12px;
-  background-color: #000;
+  background-color: var(--black);
   flex-shrink: 0;
 }
 
@@ -58,64 +97,68 @@
   background: transparent;
   font-size: 16px;
   outline: none;
+  color: #111;
 }
 
 .location-input::placeholder {
-  color: #6b6b6b;
+  color: var(--muted);
 }
 
 .location-icon-btn {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
   padding: 0;
 }
 
+/* Date/time controls */
 .datetime-group {
   display: flex;
   gap: 12px;
   margin-top: 8px;
+  align-items: center;
 }
 
 .datetime-input {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 16px;
-  background: #f6f6f6;
+  padding: 10px 14px;
+  background: #fbfbfb;
   border-radius: 8px;
   flex: 1;
 }
 
 .datetime-icon {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .datetime-select {
   border: none;
   background: transparent;
-  font-size: 16px;
+  font-size: 15px;
   outline: none;
   flex: 1;
   cursor: pointer;
 }
 
+/* Buttons */
 .see-prices-btn {
-  background-color: #000;
+  background-color: var(--black);
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 12px 32px;
-  font-size: 16px;
+  padding: 12px 24px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color 0.2s;
+  transition: background-color 0.18s ease;
 }
 
 .see-prices-btn:hover {
-  background-color: #333;
+  background-color: #222;
 }
 
 .login-prompt {
@@ -123,30 +166,107 @@
   justify-content: center;
   align-items: center;
   gap: 16px;
-  padding: 20px 32px;
-  background: #f6f6f6;
+  padding: 16px 20px;
+  background: #fafafa;
   font-size: 14px;
 }
 
 .login-btn-inline {
-  background: #000;
+  background: var(--black);
   color: #fff;
   border: none;
   border-radius: 20px;
-  padding: 8px 20px;
+  padding: 8px 18px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
 }
 
-.login-btn-inline:hover {
-  background-color: #333;
+/* RIGHT: map panel that is full height and curved on the left */
+.hero-map-panel {
+  position: relative;
+  width: 50%;
+  min-width: 420px; /* ensures a reasonable map width on wide screens; tweak as needed */
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  /* curve the left edge */
+  border-top-left-radius: 120px;
+  border-bottom-left-radius: 120px;
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.12);
 }
 
-@media (max-width: 768px) {
+/* Ensure the Map's container (leaflet) fills the panel and is clipped */
+.hero-map-panel .leaflet-container {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* border-radius here helps on some browsers; overflow hidden on parent does most of the clipping */
+  border-top-left-radius: 120px;
+  border-bottom-left-radius: 120px;
+  /* Make sure map tiles don't overflow */
+  overflow: hidden;
+}
+
+/* Small helper for very wide screens: keep left content readable */
+@media (min-width: 1600px) {
+  .hero-left {
+    padding-left: 140px;
+  }
+
+  .hero-map-panel {
+    min-width: 520px;
+  }
+}
+
+/* --------------------------
+   Responsive rules for mobile
+   -------------------------- */
+@media (max-width: 991px) {
+  .hero-section {
+    height: auto;
+    padding: 40px 0;
+  }
+
+  .hero-content {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .hero-left {
+    padding-left: 20px;
+    padding-right: 20px;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .hero-left-inner {
+    max-width: 100%;
+  }
+
   .hero-title {
-    font-size: 36px;
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+
+  /* Map panel becomes a horizontal section below content */
+  .hero-map-panel {
+    width: 100%;
+    min-width: 0;
+    height: 320px;
+    border-top-left-radius: 60px;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 60px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    margin-top: 24px;
+  }
+
+  .hero-map-panel .leaflet-container {
+    border-radius: 60px 60px 0 0;
+  }
+
+  .booking-form {
+    padding: 20px;
   }
 
   .datetime-group {
@@ -156,9 +276,15 @@
   .see-prices-btn {
     width: 100%;
   }
+}
 
-  .login-prompt {
-    flex-direction: column;
-    gap: 12px;
+/* smaller mobile */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 28px;
+  }
+
+  .hero-map-panel {
+    height: 260px;
   }
 }

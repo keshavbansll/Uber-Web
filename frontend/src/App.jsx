@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import RiderDashboard from "./pages/RiderDashboard";
 import DriverDashboard from "./pages/DriverDashboard";
 import NavBar from "./components/NavBar";
+import "leaflet/dist/leaflet.css";
 
 const getAuth = () => {
   const token = localStorage.getItem("token");
