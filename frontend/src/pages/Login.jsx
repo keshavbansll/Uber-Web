@@ -24,7 +24,7 @@ export default function Login() {
       if (res.data.user.role === "driver") {
         navigate("/driver");
       } else {
-        navigate("/rider");
+        navigate("/");
       }
     } catch (err) {
       setError(

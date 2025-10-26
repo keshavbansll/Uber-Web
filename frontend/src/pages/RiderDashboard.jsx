@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import MapComponent from "../components/MapComponent";
-import api from "../api";
 import { useNavigate } from "react-router-dom";
 
 export default function RiderDashboard() {
@@ -26,12 +25,6 @@ export default function RiderDashboard() {
     setLoading(true);
     setMessage("");
     try {
-      const res = await api.post("/api/rides", {
-        pickup,
-        dropoff,
-        pickupCoords,
-        dropoffCoords,
-      });
       setMessage("Ride requested — waiting for driver.");
       // optional: emit socket event too (server will emit to drivers when ride is saved)
       setLoading(false);
@@ -43,7 +36,10 @@ export default function RiderDashboard() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
+    <Container
+      maxWidth="md"
+      sx={{ mt: { xs: 2, sm: 3, md: 4 }, px: { xs: 2, sm: 3 } }}
+    >
       <Typography variant="h4" gutterBottom>
         Book a ride
       </Typography>

@@ -95,7 +95,11 @@ export default function Footer() {
         </div>
 
         <div className="footer-social">
-          <a href="#linkedin" className="social-icon" aria-label="LinkedIn">
+          <a
+            href="https://www.linkedin.com/in/keshavbansll/"
+            className="social-icon"
+            aria-label="LinkedIn"
+          >
             in
           </a>
           <a href="#youtube" className="social-icon" aria-label="YouTube">

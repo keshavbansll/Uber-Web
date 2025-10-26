@@ -85,14 +85,35 @@
   color: #000;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  .app-download-section {
+    padding: 60px 20px;
+  }
+
   .app-cards {
     grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-download-section {
+    padding: 48px 16px;
+  }
+
+  .app-download-title {
+    font-size: 28px;
+    margin-bottom: 32px;
   }
 
   .app-card {
     flex-direction: column;
     text-align: center;
+    padding: 32px;
+  }
+
+  .qr-code {
+    margin: 0 auto;
   }
 
   .app-arrow {
@@ -100,5 +121,28 @@
     transform: rotate(90deg);
     display: inline-block;
     margin-top: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-download-title {
+    font-size: 24px;
+  }
+
+  .app-card {
+    padding: 24px;
+  }
+
+  .app-card-title {
+    font-size: 20px;
+  }
+
+  .app-card-subtitle {
+    font-size: 14px;
+  }
+
+  .qr-code {
+    width: 100px;
+    height: 100px;
   }
 }

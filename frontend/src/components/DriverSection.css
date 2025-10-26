@@ -154,6 +154,24 @@
   text-decoration: underline;
 }
 
+@media (max-width: 1024px) {
+  .driver-section {
+    padding: 60px 20px;
+  }
+
+  .driver-container {
+    gap: 60px;
+  }
+
+  .driver-title {
+    font-size: 36px;
+  }
+
+  .driver-illustration {
+    height: 450px;
+  }
+}
+
 @media (max-width: 968px) {
   .driver-container {
     grid-template-columns: 1fr;
@@ -166,5 +184,61 @@
 
   .driver-illustration {
     height: 400px;
+  }
+
+  .driver-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .driver-section {
+    padding: 48px 16px;
+  }
+
+  .driver-container {
+    gap: 32px;
+  }
+
+  .driver-title {
+    font-size: 28px;
+  }
+
+  .driver-description {
+    font-size: 16px;
+  }
+
+  .driver-illustration {
+    height: 350px;
+  }
+
+  .driver-cta-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .driver-title {
+    font-size: 24px;
+  }
+
+  .driver-description {
+    font-size: 15px;
+  }
+
+  .driver-illustration {
+    height: 300px;
+  }
+
+  .car {
+    width: 150px;
+    height: 60px;
+  }
+
+  .person {
+    width: 50px;
+    height: 100px;
   }
 }

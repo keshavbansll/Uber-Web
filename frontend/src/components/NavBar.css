@@ -41,3 +41,50 @@
 .signup-btn:hover {
   background: #e5e5e5;
 }
+
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 0.8rem 10rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.8rem 2rem;
+    flex-wrap: wrap;
+  }
+
+  .navbar-left,
+  .navbar-right {
+    gap: 1rem;
+  }
+
+  .navbar a {
+    margin-right: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .logo {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.8rem 1rem;
+  }
+
+  .navbar a {
+    margin-right: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .logo {
+    font-size: 3rem;
+  }
+
+  .signup-btn {
+    padding: 5px 12px;
+    font-size: 0.85rem;
+  }
+}

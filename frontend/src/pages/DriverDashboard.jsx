@@ -43,7 +43,10 @@ export default function DriverDashboard() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
+    <Container
+      maxWidth="md"
+      sx={{ mt: { xs: 2, sm: 3, md: 4 }, px: { xs: 2, sm: 3 } }}
+    >
       <Typography variant="h4" gutterBottom>
         Driver Dashboard
       </Typography>
