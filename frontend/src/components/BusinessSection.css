@@ -197,6 +197,24 @@
   border-radius: 50%;
 }
 
+@media (max-width: 1024px) {
+  .business-section {
+    padding: 60px 20px;
+  }
+
+  .business-container {
+    gap: 60px;
+  }
+
+  .business-title {
+    font-size: 36px;
+  }
+
+  .business-illustration {
+    height: 450px;
+  }
+}
+
 @media (max-width: 968px) {
   .business-container {
     grid-template-columns: 1fr;
@@ -214,5 +232,66 @@
   .business-buttons {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .business-cta-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .business-section {
+    padding: 48px 16px;
+  }
+
+  .business-container {
+    gap: 32px;
+  }
+
+  .business-title {
+    font-size: 28px;
+  }
+
+  .business-description {
+    font-size: 16px;
+  }
+
+  .business-illustration {
+    height: 350px;
+  }
+
+  .business-cta-btn {
+    padding: 14px 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .business-title {
+    font-size: 24px;
+  }
+
+  .business-description {
+    font-size: 15px;
+  }
+
+  .business-illustration {
+    height: 300px;
+  }
+
+  .building {
+    width: 100px;
+    height: 160px;
+    left: 30px;
+  }
+
+  .plane {
+    font-size: 32px;
+    right: 60px;
+  }
+
+  .business-car {
+    width: 100px;
+    height: 40px;
+    right: 60px;
   }
 }

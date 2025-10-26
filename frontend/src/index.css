@@ -6,14 +6,38 @@ body,
   font-family: Inter, Roboto, sans-serif;
 }
 
-/* Leaflet map marker fix for Vite */
 .leaflet-container {
   z-index: 0;
 }
 
-/* small responsive tweaks */
 @media (max-width: 900px) {
   .leaflet-container {
     height: 300px !important;
   }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  .leaflet-container {
+    height: 280px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .leaflet-container {
+    height: 250px !important;
+  }
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
 }
