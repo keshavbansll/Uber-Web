@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 import api from "../api";
 import "./Register.css";
 
@@ -23,7 +29,6 @@ export default function Register() {
     }
 
     setLoading(true);
-
     try {
       const res = await api.post("/api/auth/register", {
         name,
@@ -31,15 +36,15 @@ export default function Register() {
         password,
         role,
       });
+
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
+      // Notify app of authentication change
+      window.dispatchEvent(new Event("auth-change"));
+
       // Navigate based on role
-      if (res.data.user.role === "driver") {
-        navigate("/driver");
-      } else {
-        navigate("/rider");
-      }
+      navigate(res.data.user.role === "driver" ? "/driver" : "/rider");
     } catch (err) {
       setError(
         err?.response?.data?.message || "Registration failed. Please try again."
@@ -64,22 +69,17 @@ export default function Register() {
           </p>
 
           <div className="register-features">
-            <div className="feature-item">
-              <span className="feature-icon">✓</span>
-              <span>Safe and secure rides</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">✓</span>
-              <span>24/7 customer support</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">✓</span>
-              <span>Flexible payment options</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">✓</span>
-              <span>Real-time tracking</span>
-            </div>
+            {[
+              "Safe and secure rides",
+              "24/7 customer support",
+              "Flexible payment options",
+              "Real-time tracking",
+            ].map((text, i) => (
+              <div key={i} className="feature-item">
+                <span className="feature-icon">✓</span>
+                <span>{text}</span>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -89,113 +89,88 @@ export default function Register() {
       </div>
 
       <div className="register-right">
-        <div className="register-form-container">
-          <h2 className="register-form-title">Create account</h2>
-          <p className="register-form-subtitle">
+        <Container maxWidth="sm" className="register-form-container">
+          <Typography variant="h5" gutterBottom>
+            Create account
+          </Typography>
+          <Typography variant="body2" color="textSecondary" gutterBottom>
             Sign up to get started with Uber
-          </p>
+          </Typography>
 
-          <form className="register-form" onSubmit={handleSubmit}>
-            <div className="input-group">
-              <label className="input-label" htmlFor="name">
-                Full name
-              </label>
-              <input
-                id="name"
-                type="text"
-                className="input-field"
-                placeholder="Enter your full name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{ display: "grid", gap: 2, mt: 2 }}
+          >
+            <TextField
+              label="Full name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            <TextField
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <TextField
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              inputProps={{ minLength: 6 }}
+            />
 
-            <div className="input-group">
-              <label className="input-label" htmlFor="email">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                className="input-field"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="input-group">
-              <label className="input-label" htmlFor="password">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                className="input-field"
-                placeholder="Create a password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-              />
-            </div>
-
-            <div className="input-group">
-              <label className="input-label">I want to</label>
+            <Box>
+              <Typography variant="subtitle1" gutterBottom>
+                I want to
+              </Typography>
               <div className="role-selection">
-                <label
-                  className={`role-option ${
-                    role === "rider" ? "selected" : ""
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="role"
-                    value="rider"
-                    checked={role === "rider"}
-                    onChange={() => setRole("rider")}
-                    className="role-radio"
-                  />
-                  <div className="role-content">
-                    <div className="role-title">Ride with Uber</div>
-                    <div className="role-description">
-                      Request rides and get to your destination
+                {[
+                  {
+                    type: "rider",
+                    title: "Ride with Uber",
+                    desc: "Request rides and get to your destination",
+                    icon: "🚗",
+                  },
+                  {
+                    type: "driver",
+                    title: "Drive with Uber",
+                    desc: "Earn money on your schedule",
+                    icon: "🚙",
+                  },
+                ].map((opt) => (
+                  <label
+                    key={opt.type}
+                    className={`role-option ${
+                      role === opt.type ? "selected" : ""
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="role"
+                      value={opt.type}
+                      checked={role === opt.type}
+                      onChange={() => setRole(opt.type)}
+                      className="role-radio"
+                    />
+                    <div className="role-content">
+                      <div className="role-title">{opt.title}</div>
+                      <div className="role-description">{opt.desc}</div>
                     </div>
-                  </div>
-                  <span className="role-icon">🚗</span>
-                </label>
-
-                <label
-                  className={`role-option ${
-                    role === "driver" ? "selected" : ""
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="role"
-                    value="driver"
-                    checked={role === "driver"}
-                    onChange={() => setRole("driver")}
-                    className="role-radio"
-                  />
-                  <div className="role-content">
-                    <div className="role-title">Drive with Uber</div>
-                    <div className="role-description">
-                      Earn money on your schedule
-                    </div>
-                  </div>
-                  <span className="role-icon">🚙</span>
-                </label>
+                    <span className="role-icon">{opt.icon}</span>
+                  </label>
+                ))}
               </div>
-            </div>
+            </Box>
 
             {error && (
-              <div className="error-message">
-                <span>⚠️</span>
-                <span>{error}</span>
-              </div>
+              <Typography color="error" sx={{ display: "flex", gap: 1 }}>
+                ⚠️ {error}
+              </Typography>
             )}
 
             <label className="terms-checkbox">
@@ -216,10 +191,22 @@ export default function Register() {
               </span>
             </label>
 
-            <button type="submit" className="submit-btn" disabled={loading}>
-              {loading ? "Creating account..." : "Create account"}
-            </button>
-          </form>
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={loading}
+              sx={{ mt: 1 }}
+            >
+              {loading ? (
+                <>
+                  <CircularProgress size={20} sx={{ mr: 1 }} /> Creating
+                  account...
+                </>
+              ) : (
+                "Create account"
+              )}
+            </Button>
+          </Box>
 
           <div className="divider">
             <div className="divider-line"></div>
@@ -239,7 +226,7 @@ export default function Register() {
           </div>
 
           <div className="login-prompt">
-            Already have an account?
+            Already have an account?{" "}
             <a
               href="#login"
               className="login-link"
@@ -251,7 +238,7 @@ export default function Register() {
               Sign in
             </a>
           </div>
-        </div>
+        </Container>
       </div>
     </div>
   );

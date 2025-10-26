@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 import api from "../api";
 import "./Login.css";
 
@@ -20,12 +26,11 @@ export default function Login() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
+      // Notify app of authentication change
+      window.dispatchEvent(new Event("auth-change"));
+
       // Navigate based on role
-      if (res.data.user.role === "driver") {
-        navigate("/driver");
-      } else {
-        navigate("/");
-      }
+      navigate(res.data.user.role === "driver" ? "/driver" : "/rider");
     } catch (err) {
       setError(
         err?.response?.data?.message || "Login failed. Please try again."
@@ -52,50 +57,39 @@ export default function Login() {
 
         <div className="login-left-footer">© 2025 Uber Technologies Inc.</div>
       </div>
-
       <div className="login-right">
-        <div className="login-form-container">
-          <h2 className="login-form-title">Sign in</h2>
-          <p className="login-form-subtitle">
+        <Container maxWidth="sm" className="login-form-container">
+          <Typography variant="h5" gutterBottom>
+            Sign in
+          </Typography>
+          <Typography variant="body2" color="textSecondary" gutterBottom>
             Enter your credentials to continue
-          </p>
+          </Typography>
 
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="input-group">
-              <label className="input-label" htmlFor="email">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                className="input-field"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="input-group">
-              <label className="input-label" htmlFor="password">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                className="input-field"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{ display: "grid", gap: 2, mt: 2 }}
+          >
+            <TextField
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <TextField
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
 
             {error && (
-              <div className="error-message">
-                <span>⚠️</span>
-                <span>{error}</span>
-              </div>
+              <Typography color="error" sx={{ display: "flex", gap: 1 }}>
+                ⚠️ {error}
+              </Typography>
             )}
 
             <div className="forgot-password">
@@ -104,10 +98,21 @@ export default function Login() {
               </a>
             </div>
 
-            <button type="submit" className="submit-btn" disabled={loading}>
-              {loading ? "Signing in..." : "Sign in"}
-            </button>
-          </form>
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={loading}
+              sx={{ mt: 1 }}
+            >
+              {loading ? (
+                <>
+                  <CircularProgress size={20} sx={{ mr: 1 }} /> Signing in...
+                </>
+              ) : (
+                "Sign in"
+              )}
+            </Button>
+          </Box>
 
           <div className="divider">
             <div className="divider-line"></div>
@@ -127,7 +132,7 @@ export default function Login() {
           </div>
 
           <div className="signup-prompt">
-            Don't have an account?
+            Don’t have an account?{" "}
             <a
               href="#signup"
               className="signup-link"
@@ -139,7 +144,7 @@ export default function Login() {
               Sign up
             </a>
           </div>
-        </div>
+        </Container>
       </div>
     </div>
   );

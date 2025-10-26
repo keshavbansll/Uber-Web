@@ -6,7 +6,6 @@ import Register from "./pages/Register";
 import RiderDashboard from "./pages/RiderDashboard";
 import DriverDashboard from "./pages/DriverDashboard";
 import NavBar from "./components/NavBar";
-import "leaflet/dist/leaflet.css";
 
 const getAuth = () => {
   const token = localStorage.getItem("token");
@@ -22,40 +21,58 @@ const Protected = ({ children, role }) => {
 };
 
 export default function App() {
+  // Add a key prop to force re-render when storage changes
+  const [authKey, setAuthKey] = React.useState(0);
+
+  // Listen for storage changes
+  React.useEffect(() => {
+    const handleStorageChange = () => {
+      setAuthKey((prev) => prev + 1);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    // Custom event for same-tab changes
+    window.addEventListener("auth-change", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("auth-change", handleStorageChange);
+    };
+  }, []);
+
   return (
-    <>
-      <Routes>
-        {/* Public Home Page */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+    <Routes key={authKey}>
+      {/* Public Home Page */}
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-        {/* Protected Routes */}
-        <Route
-          path="/rider"
-          element={
-            <Protected role="rider">
-              <NavBar />
-              <RiderDashboard />
-            </Protected>
-          }
-        />
+      {/* Protected Routes */}
+      <Route
+        path="/rider"
+        element={
+          <Protected role="rider">
+            <NavBar />
+            <RiderDashboard />
+          </Protected>
+        }
+      />
 
-        <Route
-          path="/driver"
-          element={
-            <Protected role="driver">
-              <NavBar />
-              <DriverDashboard />
-            </Protected>
-          }
-        />
+      <Route
+        path="/driver"
+        element={
+          <Protected role="driver">
+            <NavBar />
+            <DriverDashboard />
+          </Protected>
+        }
+      />
 
-        <Route
-          path="*"
-          element={<div style={{ padding: 20 }}>404 — Not Found</div>}
-        />
-      </Routes>
-    </>
+      <Route
+        path="*"
+        element={<div style={{ padding: 20 }}>404 — Not Found</div>}
+      />
+    </Routes>
   );
 }

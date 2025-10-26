@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 
 export default function Header() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
+  // Check if user is logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("user");
+    if (token && userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
 
   const handleSignUp = () => {
     navigate("/register");
@@ -12,6 +23,22 @@ export default function Header() {
 
   const handleLogin = () => {
     navigate("/login");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    setIsProfileOpen(false);
+    navigate("/");
+  };
+
+  const handleDashboard = () => {
+    if (user?.role === "driver") {
+      navigate("/driver");
+    } else {
+      navigate("/rider");
+    }
   };
 
   return (
@@ -60,12 +87,57 @@ export default function Header() {
           <a href="#help" className="header-link">
             Help
           </a>
-          <button className="header-link-btn" onClick={handleLogin}>
-            Log in
-          </button>
-          <button className="signup-btn" onClick={handleSignUp}>
-            Sign up
-          </button>
+
+          {/* Conditional rendering based on login status */}
+          {user ? (
+            <div
+              className="profile-dropdown"
+              onMouseEnter={() => setIsProfileOpen(true)}
+              onMouseLeave={() => setIsProfileOpen(false)}
+            >
+              <div className="profile-icon-wrapper">
+                <div className="profile-icon">
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+              </div>
+              {isProfileOpen && (
+                <div className="dropdown-menu profile-menu">
+                  <div className="profile-menu-header">
+                    <div className="profile-menu-name">{user.name}</div>
+                    <div className="profile-menu-role">{user.role}</div>
+                  </div>
+                  <a
+                    href="#profile"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleDashboard();
+                    }}
+                  >
+                    Dashboard
+                  </a>
+                  <a href="#settings">Settings</a>
+                  <a
+                    href="#logout"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLogout();
+                    }}
+                  >
+                    Logout
+                  </a>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <button className="header-link-btn" onClick={handleLogin}>
+                Log in
+              </button>
+              <button className="signup-btn" onClick={handleSignUp}>
+                Sign up
+              </button>
+            </>
+          )}
         </div>
       </div>
     </header>
