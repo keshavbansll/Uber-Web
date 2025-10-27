@@ -44,7 +44,7 @@ export default function Register() {
       window.dispatchEvent(new Event("auth-change"));
 
       // Navigate based on role
-      navigate(res.data.user.role === "driver" ? "/driver" : "/rider");
+      navigate(res.data.user.role === "driver" ? "/" : "/");
     } catch (err) {
       setError(
         err?.response?.data?.message || "Registration failed. Please try again."
