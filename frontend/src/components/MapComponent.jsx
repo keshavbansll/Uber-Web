@@ -27,7 +27,7 @@ function ClickSelector({ onChange }) {
 export default function MapComponent({
   coords,
   setCoords,
-  height = "350px",
+  height = "100%",
   center = [28.6139, 77.209],
 }) {
   return (
