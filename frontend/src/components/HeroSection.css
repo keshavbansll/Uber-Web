@@ -178,8 +178,8 @@
   height: 100%;
   overflow: hidden;
   background: transparent;
-  border-top-left-radius: 120px;
-  border-bottom-left-radius: 120px;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
   box-shadow: -8px 0 30px rgba(0, 0, 0, 0.12);
 }
 
