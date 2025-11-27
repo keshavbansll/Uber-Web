@@ -61,7 +61,7 @@ export default function Header() {
             <div
               className="nav-link dropdown"
               onMouseEnter={() => setIsAboutOpen(true)}
-              onMouseLeave={() => setIsAboutOpen(false)}
+              onClick={() => setIsAboutOpen(false)}
             >
               About
               <span className="dropdown-arrow">▼</span>
@@ -93,7 +93,7 @@ export default function Header() {
             <div
               className="profile-dropdown"
               onMouseEnter={() => setIsProfileOpen(true)}
-              onMouseLeave={() => setIsProfileOpen(false)}
+              onClick={() => setIsProfileOpen(false)}
             >
               <div className="profile-icon-wrapper">
                 <div className="profile-icon">
