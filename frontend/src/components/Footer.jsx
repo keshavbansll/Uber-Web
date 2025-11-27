@@ -137,13 +137,19 @@ export default function Footer() {
         </div>
 
         <div className="footer-app-badges">
-          <a href="#google-play" className="app-badge">
+          <a
+            href="https://play.google.com/store/apps/details?id=com.ubercab&pcampaignid=web_share"
+            className="app-badge"
+          >
             <div className="badge-content">
               <span className="badge-text-small">GET IT ON</span>
               <span className="badge-text-large">Google Play</span>
             </div>
           </a>
-          <a href="#app-store" className="app-badge">
+          <a
+            href="https://apps.apple.com/in/app/uber-request-a-ride/id368677368"
+            className="app-badge"
+          >
             <div className="badge-content">
               <span className="badge-text-small">Download on the</span>
               <span className="badge-text-large">App Store</span>
