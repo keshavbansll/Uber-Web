@@ -348,3 +348,58 @@
     font-size: 14px;
   }
 }
+
+/* price popup/menu (static) */
+.prices-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.price-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 320px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.16);
+  z-index: 1500;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+.price-menu-group {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+.price-menu-group:last-child {
+  border-bottom: none;
+}
+.price-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 10px;
+}
+.price-item .vehicle {
+  font-size: 14px;
+  color: #222;
+  font-weight: 600;
+}
+.price-item .price {
+  font-size: 14px;
+  color: #111;
+  font-weight: 700;
+}
+.price-item:hover {
+  background: #f7f9fc;
+  border-radius: 6px;
+}
+
+@media (max-width: 480px) {
+  .price-menu {
+    width: calc(100% - 24px);
+    left: 12px;
+    right: 12px;
+    top: calc(100% + 10px);
+  }
+}

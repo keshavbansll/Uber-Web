@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HeroSection.css";
 import MapComponent from "./MapComponent";
@@ -11,9 +11,11 @@ export default function HeroSection() {
   const [dropoffCoords, setDropoffCoords] = useState(null);
   const [date, setDate] = useState("Today");
   const [time, setTime] = useState("Now");
+  const [showPrices, setShowPrices] = useState(false);
 
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const pricesRef = useRef(null);
 
   // Check if user is logged in (mirror of Header logic)
   useEffect(() => {
@@ -28,8 +30,19 @@ export default function HeroSection() {
     }
   }, []);
 
+  // close price menu when clicking outside
+  useEffect(() => {
+    function onDocClick(e) {
+      if (pricesRef.current && !pricesRef.current.contains(e.target)) {
+        setShowPrices(false);
+      }
+    }
+    document.addEventListener("click", onDocClick);
+    return () => document.removeEventListener("click", onDocClick);
+  }, []);
+
   const handleSeePrices = () => {
-    console.log("See prices clicked");
+    setShowPrices((s) => !s);
   };
 
   const handleLoginNavigate = () => {
@@ -116,13 +129,59 @@ export default function HeroSection() {
                     </select>
                   </div>
 
-                  <button
-                    type="button"
-                    className="see-prices-btn"
-                    onClick={handleSeePrices}
-                  >
-                    See prices
-                  </button>
+                  <div className="prices-wrapper" ref={pricesRef}>
+                    <button
+                      type="button"
+                      className="see-prices-btn"
+                      onClick={handleSeePrices}
+                      aria-expanded={showPrices}
+                      aria-controls="price-menu"
+                    >
+                      See prices
+                    </button>
+
+                    {showPrices && (
+                      <div
+                        id="price-menu"
+                        className="price-menu"
+                        role="dialog"
+                        aria-label="Price options"
+                      >
+                        <div className="price-menu-group">
+                          <div className="price-item">
+                            <div className="vehicle">Bike</div>
+                            <div className="price">₹175</div>
+                          </div>
+                          <div className="price-item">
+                            <div className="vehicle">Bike Saver</div>
+                            <div className="price">₹150</div>
+                          </div>
+                        </div>
+
+                        <div className="price-menu-group">
+                          <div className="price-item">
+                            <div className="vehicle">Hatchback</div>
+                            <div className="price">₹250</div>
+                          </div>
+                          <div className="price-item">
+                            <div className="vehicle">Sedan</div>
+                            <div className="price">₹300</div>
+                          </div>
+                          <div className="price-item">
+                            <div className="vehicle">Premium</div>
+                            <div className="price">₹700</div>
+                          </div>
+                        </div>
+
+                        <div className="price-menu-group">
+                          <div className="price-item">
+                            <div className="vehicle">Rentals (per hour)</div>
+                            <div className="price">₹1,200</div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
