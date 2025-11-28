@@ -1,5 +1,8 @@
 .navbar {
-  font-family: "Plus Jakarta Sans";
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
   display: flex;
   justify-content: space-between;
   align-items: center;

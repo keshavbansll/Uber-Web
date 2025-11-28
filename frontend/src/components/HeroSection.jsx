@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./HeroSection.css";
 import MapComponent from "./MapComponent";
 
@@ -9,8 +10,36 @@ export default function HeroSection() {
   const [time, setTime] = useState("Now");
   const [coords, setCoords] = useState(null); // to track map clicks
 
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  // Check if user is logged in (mirror of Header logic)
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("user");
+    if (token && userData) {
+      try {
+        setUser(JSON.parse(userData));
+      } catch (e) {
+        setUser(null);
+      }
+    }
+  }, []);
+
   const handleSeePrices = () => {
     console.log("See prices clicked");
+  };
+
+  const handleLoginNavigate = () => {
+    navigate("/login");
+  };
+
+  const handleSeeActivity = () => {
+    if (user?.role === "driver") {
+      navigate("/driver");
+    } else {
+      navigate("/rider");
+    }
   };
 
   return (
@@ -91,12 +120,30 @@ export default function HeroSection() {
                 </div>
               </div>
 
-              <div className="login-prompt">
-                <span>Log in to see your recent activity</span>
-                <button type="button" className="login-btn-inline">
-                  Log in
-                </button>
-              </div>
+              {/* Conditional rendering based on login status */}
+              {user ? (
+                <div className="login-prompt">
+                  <span>See your recent activity</span>
+                  <button
+                    type="button"
+                    className="login-btn-inline"
+                    onClick={handleSeeActivity}
+                  >
+                    See activity
+                  </button>
+                </div>
+              ) : (
+                <div className="login-prompt">
+                  <span>Log in to see your recent activity</span>
+                  <button
+                    type="button"
+                    className="login-btn-inline"
+                    onClick={handleLoginNavigate}
+                  >
+                    Log in
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
