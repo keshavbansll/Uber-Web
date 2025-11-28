@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HeroSection.css";
 import MapComponent from "./MapComponent";
+import LocationAutocomplete from "./LocationAutocomplete";
 
 export default function HeroSection() {
   const [pickupLocation, setPickupLocation] = useState("");
   const [dropoffLocation, setDropoffLocation] = useState("");
+  const [pickupCoords, setPickupCoords] = useState(null);
+  const [dropoffCoords, setDropoffCoords] = useState(null);
   const [date, setDate] = useState("Today");
   const [time, setTime] = useState("Now");
-  const [coords, setCoords] = useState(null); // to track map clicks
 
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -54,12 +56,14 @@ export default function HeroSection() {
               <div className="booking-form">
                 <div className="input-group">
                   <div className="location-dot" aria-hidden="true" />
-                  <input
-                    type="text"
-                    className="location-input"
-                    placeholder="Pickup location"
+                  <LocationAutocomplete
                     value={pickupLocation}
-                    onChange={(e) => setPickupLocation(e.target.value)}
+                    onChange={(v) => setPickupLocation(v)}
+                    onSelect={(label, coords) => {
+                      setPickupLocation(label);
+                      if (coords) setPickupCoords(coords);
+                    }}
+                    placeholder="Pickup location"
                   />
                   <button
                     type="button"
@@ -72,12 +76,14 @@ export default function HeroSection() {
 
                 <div className="input-group">
                   <div className="location-square" aria-hidden="true" />
-                  <input
-                    type="text"
-                    className="location-input"
-                    placeholder="Dropoff location"
+                  <LocationAutocomplete
                     value={dropoffLocation}
-                    onChange={(e) => setDropoffLocation(e.target.value)}
+                    onChange={(v) => setDropoffLocation(v)}
+                    onSelect={(label, coords) => {
+                      setDropoffLocation(label);
+                      if (coords) setDropoffCoords(coords);
+                    }}
+                    placeholder="Dropoff location"
                   />
                 </div>
 
@@ -150,7 +156,14 @@ export default function HeroSection() {
 
         {/* Right side: full-height map panel */}
         <div className="hero-map-panel" aria-hidden="true">
-          <MapComponent coords={coords} setCoords={setCoords} />
+          <MapComponent
+            markers={[
+              pickupCoords ? { coords: pickupCoords, variant: "pickup" } : null,
+              dropoffCoords
+                ? { coords: dropoffCoords, variant: "dropoff" }
+                : null,
+            ].filter(Boolean)}
+          />
         </div>
       </div>
     </section>

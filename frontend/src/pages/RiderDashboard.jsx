@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import MapComponent from "../components/MapComponent";
+import LocationAutocomplete from "../components/LocationAutocomplete";
 import { useNavigate } from "react-router-dom";
 
 export default function RiderDashboard() {
@@ -50,24 +50,38 @@ export default function RiderDashboard() {
       <Box sx={{ display: "grid", gap: 2 }}>
         <Box>
           <Typography variant="subtitle2">Pickup address</Typography>
-          <TextField
-            fullWidth
+          <LocationAutocomplete
             value={pickup}
-            onChange={(e) => setPickup(e.target.value)}
+            onChange={(v) => setPickup(v)}
+            onSelect={(label, coords) => {
+              setPickup(label);
+              if (coords) setPickupCoords(coords);
+            }}
             placeholder="Type address or click map"
           />
-          <MapComponent coords={pickupCoords} setCoords={setPickupCoords} />
+          <MapComponent
+            coords={pickupCoords}
+            setCoords={setPickupCoords}
+            variant="pickup"
+          />
         </Box>
 
         <Box>
           <Typography variant="subtitle2">Dropoff address</Typography>
-          <TextField
-            fullWidth
+          <LocationAutocomplete
             value={dropoff}
-            onChange={(e) => setDropoff(e.target.value)}
+            onChange={(v) => setDropoff(v)}
+            onSelect={(label, coords) => {
+              setDropoff(label);
+              if (coords) setDropoffCoords(coords);
+            }}
             placeholder="Type address or click map"
           />
-          <MapComponent coords={dropoffCoords} setCoords={setDropoffCoords} />
+          <MapComponent
+            coords={dropoffCoords}
+            setCoords={setDropoffCoords}
+            variant="dropoff"
+          />
         </Box>
 
         <Button variant="contained" onClick={handleBook} disabled={loading}>
