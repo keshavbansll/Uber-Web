@@ -52,7 +52,7 @@
   background: var(--card-bg);
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
 }
 
@@ -365,6 +365,8 @@
   z-index: 1500;
   padding: 12px;
   border: 1px solid rgba(0, 0, 0, 0.06);
+  overflow-y: auto;
+  padding-right: 6px;
 }
 .price-menu-group {
   padding: 6px 0;

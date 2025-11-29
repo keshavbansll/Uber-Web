@@ -156,9 +156,6 @@ export default function HeroSection() {
                             <div className="vehicle">Bike Saver</div>
                             <div className="price">₹150</div>
                           </div>
-                        </div>
-
-                        <div className="price-menu-group">
                           <div className="price-item">
                             <div className="vehicle">Hatchback</div>
                             <div className="price">₹250</div>
@@ -172,12 +169,9 @@ export default function HeroSection() {
                             <div className="price">₹700</div>
                           </div>
                         </div>
-
-                        <div className="price-menu-group">
-                          <div className="price-item">
-                            <div className="vehicle">Rentals (per hour)</div>
-                            <div className="price">₹1,200</div>
-                          </div>
+                        <div className="price-item">
+                          <div className="vehicle">Rentals (per hour)</div>
+                          <div className="price">₹1,200</div>
                         </div>
                       </div>
                     )}
