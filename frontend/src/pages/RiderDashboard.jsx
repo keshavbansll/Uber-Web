@@ -7,6 +7,8 @@ import MapComponent from "../components/MapComponent";
 import LocationAutocomplete from "../components/LocationAutocomplete";
 import { useNavigate } from "react-router-dom";
 
+//
+
 export default function RiderDashboard() {
   const nav = useNavigate();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
