@@ -391,7 +391,7 @@ export default function HeroSection() {
         </div>
       )}
 
-      {/* LinkedIn Ad - fixed and draggable */}
+      {/* LinkedIn Ad*/}
       <div
         className="linkedin-ad"
         ref={linkedinRef}
@@ -404,8 +404,6 @@ export default function HeroSection() {
         <div className="linkedin-body">
           <div className="linkedin-title">Connect with the Developer</div>
           <div className="linkedin-description">
-            Follow my journey in building amazing web experiences and connect with me on
-            LinkedIn
           </div>
           <a
             className="linkedin-link"
