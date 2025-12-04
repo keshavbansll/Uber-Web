@@ -358,15 +358,16 @@
   position: absolute;
   top: calc(100% + 12px);
   right: 0;
-  width: 320px;
+  width: 340px;
+  max-width: calc(100vw - 48px);
   background: #fff;
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.16);
   z-index: 1500;
-  padding: 12px;
+  padding: 16px;
   border: 1px solid rgba(0, 0, 0, 0.06);
   overflow-y: auto;
-  padding-right: 6px;
+  max-height: 400px;
 }
 .price-menu-group {
   padding: 6px 0;
