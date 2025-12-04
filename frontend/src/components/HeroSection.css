@@ -600,3 +600,13 @@
     font-size: 13px;
   }
 }
+
+@media (max-width: 600px) {
+  .prices-wrapper {
+    width: 100%;
+  }
+
+  .see-prices-btn {
+    width: 100%;
+  }
+}
