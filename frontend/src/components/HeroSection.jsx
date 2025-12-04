@@ -45,24 +45,24 @@ export default function HeroSection() {
   }, []);
 
   const handleSeePrices = (e) => {
-  e.stopPropagation();
-  setShowPrices((s) => !s);
+    e.stopPropagation();
+    setShowPrices((s) => !s);
   };
 
   const handlePriceSelect = (vehicle) => {
-  setSelectedVehicle(vehicle);
-  setShowPrices(false);
-  setShowLoading(true);
+    setSelectedVehicle(vehicle);
+    setShowPrices(false);
+    setShowLoading(true);
 
-  setTimeout(() => {
-    setShowLoading(false);
-    setSelectedVehicle("");
-  }, 8000);
+    setTimeout(() => {
+      setShowLoading(false);
+      setSelectedVehicle("");
+    }, 8000);
   };
 
   const handleCancelLoading = () => {
-  setShowLoading(false);
-  setSelectedVehicle("");
+    setShowLoading(false);
+    setSelectedVehicle("");
   };
 
   const handleLoginNavigate = () => {
@@ -75,25 +75,30 @@ export default function HeroSection() {
     } else {
       navigate("/rider");
     }
+  };
 
-  if (!showLoading) return;
+  // Update loading messages while showLoading is true
+  useEffect(() => {
+    if (!showLoading) return;
 
-  const messages = [
-    "Stay tuned",
-    "Connecting to nearby drivers",
-    "A few more minutes",
-    "Almost there",
-    "We'll notify you soon",
-  ];
+    const messages = [
+      "Stay tuned",
+      "Connecting to nearby drivers",
+      "A few more minutes",
+      "Almost there",
+      "We'll notify you soon",
+    ];
 
-  let index = 0;
-  const interval = setInterval(() => {
-    index = (index + 1) % messages.length;
+    let index = 0;
     setLoadingMessage(messages[index]);
-  }, 2500);
 
-  return () => clearInterval(interval);
-  }, [showLoading];
+    const interval = setInterval(() => {
+      index = (index + 1) % messages.length;
+      setLoadingMessage(messages[index]);
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, [showLoading]);
 
   return (
     <section className="hero-section">
@@ -258,9 +263,8 @@ export default function HeroSection() {
           />
         </div>
       </div>
-      
+
       {/* Loading Dialog */}
-      
       {showLoading && (
         <div className="loading-overlay" onClick={handleCancelLoading}>
           <div className="loading-dialog" onClick={(e) => e.stopPropagation()}>
@@ -302,7 +306,8 @@ export default function HeroSection() {
         <div className="linkedin-description">
           Follow my journey in building amazing web experiences and connect with me on LinkedIn
         </div>
-        
+
+        <a
           href="https://www.linkedin.com/in/keshavbansll/"
           target="_blank"
           rel="noopener noreferrer"
@@ -312,7 +317,6 @@ export default function HeroSection() {
           </button>
         </a>
       </div>
-    </section>
     </section>
   );
 }
