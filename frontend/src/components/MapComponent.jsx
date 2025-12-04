@@ -9,10 +9,19 @@ import {
 } from "react-leaflet";
 
 // small helper to select location by click
-function ClickSelector({ onChange }) {
-  useMapEvents({
+function ClickSelector({ onChange, onCenterChange }) {
+  const map = useMapEvents({
     click(e) {
-      onChange([e.latlng.lat, e.latlng.lng]);
+      const coords = [e.latlng.lat, e.latlng.lng];
+      onChange(coords);
+      
+      // Automatically center map on clicked location
+      if (onCenterChange) {
+        map.flyTo(coords, map.getZoom(), {
+          animate: true,
+          duration: 0.5,
+        });
+      }
     },
   });
   return null;
@@ -93,7 +102,7 @@ export default function MapComponent({
                 <Popup>Selected</Popup>
               </Marker>
             )}
-        <ClickSelector onChange={setCoords} />
+        <ClickSelector onChange={setCoords} onCenterChange />
       </MapContainer>
     </div>
   );
