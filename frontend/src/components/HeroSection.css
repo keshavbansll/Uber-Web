@@ -461,7 +461,7 @@
   height: 100%;
   background: #000;
   border-radius: 2px;
-  animation: loadingBar 1.5s ease-in-out infinite;
+  animation: loadingBar 3s ease-in-ou infinite;
 }
 
 .loading-bar:nth-child(1) .loading-bar-fill {
