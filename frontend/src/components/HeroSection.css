@@ -400,9 +400,203 @@
 
 @media (max-width: 480px) {
   .price-menu {
-    width: calc(100% - 24px);
-    left: 12px;
-    right: 12px;
-    top: calc(100% + 10px);
+    width: calc(100vw - 32px);
+    left: 16px;
+    right: 16px;
+    top: calc(100% + 8px);
+    max-height: 60vh;
+  }
+}
+
+/* Loading Dialog */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.loading-dialog {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 32px;
+  max-width: 400px;
+  width: calc(100% - 48px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.loading-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 24px 0 32px;
+}
+
+.loading-bar {
+  height: 4px;
+  background: #f0f0f0;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loading-bar-fill {
+  height: 100%;
+  background: #000;
+  border-radius: 2px;
+  animation: loadingBar 1.5s ease-in-out infinite;
+}
+
+.loading-bar:nth-child(1) .loading-bar-fill {
+  animation-delay: 0s;
+}
+
+.loading-bar:nth-child(2) .loading-bar-fill {
+  animation-delay: 0.2s;
+}
+
+.loading-bar:nth-child(3) .loading-bar-fill {
+  animation-delay: 0.4s;
+}
+
+.loading-bar:nth-child(4) .loading-bar-fill {
+  animation-delay: 0.6s;
+}
+
+@keyframes loadingBar {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.loading-message {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 8px;
+  min-height: 27px;
+  transition: opacity 0.3s ease;
+}
+
+.loading-submessage {
+  font-size: 14px;
+  color: #6b6b6b;
+  line-height: 1.5;
+}
+
+.loading-cancel-btn {
+  margin-top: 24px;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.loading-cancel-btn:hover {
+  background: #e0e0e0;
+}
+
+/* LinkedIn Ad Box */
+.linkedin-ad {
+  background: linear-gradient(135deg, #0077b5 0%, #00a0dc 100%);
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 32px;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 119, 181, 0.2);
+  transition: transform 0.2s;
+}
+
+.linkedin-ad:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 119, 181, 0.3);
+}
+
+.linkedin-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.linkedin-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.linkedin-description {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.linkedin-btn {
+  background: #fff;
+  color: #0077b5;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.linkedin-btn:hover {
+  background: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+  .loading-dialog {
+    padding: 32px 24px;
+  }
+
+  .loading-message {
+    font-size: 16px;
+  }
+
+  .linkedin-ad {
+    padding: 20px;
+    margin-top: 24px;
+  }
+
+  .linkedin-icon {
+    font-size: 40px;
+  }
+
+  .linkedin-title {
+    font-size: 16px;
+  }
+
+  .linkedin-description {
+    font-size: 13px;
   }
 }
