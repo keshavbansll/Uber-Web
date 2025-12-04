@@ -610,3 +610,110 @@
     width: 100%;
   }
 }
+
+.linkedin-ad {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 2500;
+  width: 260px;
+  max-width: calc(100% - 40px);
+  background: linear-gradient(135deg, #0077b5 0%, #00a0dc 100%);
+  border-radius: 12px;
+  padding: 12px;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(0, 119, 181, 0.25);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  user-select: none;
+  touch-action: none; /* allow pointer dragging without default touch gestures */
+  cursor: grab;
+  transition: transform 0.12s ease;
+}
+
+.linkedin-ad.dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+.linkedin-drag-handle {
+  width: 56px;
+  min-width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: grab;
+}
+
+.linkedin-icon {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.linkedin-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 6px;
+  flex: 1;
+}
+
+.linkedin-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.05;
+}
+
+.linkedin-description {
+  font-size: 12px;
+  opacity: 0.95;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.linkedin-btn {
+  margin-top: 6px;
+  background: #fff;
+  color: #0077b5;
+  border: none;
+  border-radius: 16px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  align-self: start;
+}
+
+@media (max-width: 480px) {
+  .linkedin-ad {
+    width: 220px;
+    right: 12px;
+    bottom: 12px;
+    padding: 10px;
+  }
+  .linkedin-drag-handle {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+  }
+  .linkedin-icon {
+    font-size: 24px;
+  }
+  .linkedin-title {
+    font-size: 13px;
+  }
+  .linkedin-description {
+    font-size: 12px;
+  }
+  .linkedin-btn {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+}
