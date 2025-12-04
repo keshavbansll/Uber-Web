@@ -1,3 +1,4 @@
+// HeroSection.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HeroSection.css";
@@ -19,6 +20,9 @@ export default function HeroSection() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const pricesRef = useRef(null);
+
+  // LinkedIn ad ref for dragging
+  const linkedinRef = useRef(null);
 
   // Check if user is logged in (mirror of Header logic)
   useEffect(() => {
@@ -99,6 +103,94 @@ export default function HeroSection() {
 
     return () => clearInterval(interval);
   }, [showLoading]);
+
+  // Draggable LinkedIn ad logic using pointer events
+  useEffect(() => {
+    const el = linkedinRef.current;
+    if (!el) return;
+
+    let dragging = false;
+    let startX = 0;
+    let startY = 0;
+    let elStartLeft = 0;
+    let elStartTop = 0;
+
+    function clamp(val, min, max) {
+      return Math.max(min, Math.min(max, val));
+    }
+
+    function onPointerDown(e) {
+      // Only start drag from handle or the ad itself
+      // prevent default to avoid page scroll while dragging on touch
+      e.preventDefault();
+      el.setPointerCapture(e.pointerId);
+      dragging = true;
+      el.classList.add("dragging");
+
+      const rect = el.getBoundingClientRect();
+      // switch to explicit left/top so the element can be moved
+      el.style.left = `${rect.left}px`;
+      el.style.top = `${rect.top}px`;
+      el.style.right = "auto";
+      el.style.bottom = "auto";
+      el.style.transform = "none";
+
+      startX = e.clientX;
+      startY = e.clientY;
+      elStartLeft = rect.left;
+      elStartTop = rect.top;
+
+      window.addEventListener("pointermove", onPointerMove);
+      window.addEventListener("pointerup", onPointerUp);
+      window.addEventListener("pointercancel", onPointerUp);
+    }
+
+    function onPointerMove(e) {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      const newLeft = elStartLeft + dx;
+      const newTop = elStartTop + dy;
+
+      // keep within viewport with small margin
+      const margin = 8;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const rect = el.getBoundingClientRect();
+      const w = rect.width;
+      const h = rect.height;
+
+      const clampedLeft = clamp(newLeft, margin, vw - w - margin);
+      const clampedTop = clamp(newTop, margin, vh - h - margin);
+
+      el.style.left = `${clampedLeft}px`;
+      el.style.top = `${clampedTop}px`;
+    }
+
+    function onPointerUp(e) {
+      dragging = false;
+      try {
+        el.releasePointerCapture(e.pointerId);
+      } catch (err) {
+        // ignore
+      }
+      el.classList.remove("dragging");
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerUp);
+    }
+
+    // Attach pointerdown on the drag handle and on the ad container to start drag
+    const handle = el.querySelector(".linkedin-drag-handle") || el;
+    handle.addEventListener("pointerdown", onPointerDown, { passive: false });
+
+    return () => {
+      handle.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerUp);
+    };
+  }, []);
 
   return (
     <section className="hero-section">
@@ -299,23 +391,33 @@ export default function HeroSection() {
         </div>
       )}
 
-      {/* LinkedIn Ad */}
-      <div className="linkedin-ad">
-        <div className="linkedin-icon">in</div>
-        <div className="linkedin-title">Connect with the Developer</div>
-        <div className="linkedin-description">
-          Follow my journey in building amazing web experiences and connect with me on LinkedIn
+      {/* LinkedIn Ad - fixed and draggable */}
+      <div
+        className="linkedin-ad"
+        ref={linkedinRef}
+        role="region"
+        aria-label="LinkedIn developer profile"
+      >
+        <div className="linkedin-drag-handle" aria-hidden="true" title="Drag to move">
+          <div className="linkedin-icon">in</div>
         </div>
-
-        <a
-          href="https://www.linkedin.com/in/keshavbansll/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <button type="button" className="linkedin-btn">
-            Visit LinkedIn Profile
-          </button>
-        </a>
+        <div className="linkedin-body">
+          <div className="linkedin-title">Connect with the Developer</div>
+          <div className="linkedin-description">
+            Follow my journey in building amazing web experiences and connect with me on
+            LinkedIn
+          </div>
+          <a
+            className="linkedin-link"
+            href="https://www.linkedin.com/in/keshavbansll/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button type="button" className="linkedin-btn">
+              Visit LinkedIn Profile
+            </button>
+          </a>
+        </div>
       </div>
     </section>
   );
