@@ -12,6 +12,9 @@ export default function HeroSection() {
   const [date, setDate] = useState("Today");
   const [time, setTime] = useState("Now");
   const [showPrices, setShowPrices] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("Stay tuned");
+  const [selectedVehicle, setSelectedVehicle] = useState("");
 
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -41,8 +44,25 @@ export default function HeroSection() {
     return () => document.removeEventListener("click", onDocClick);
   }, []);
 
-  const handleSeePrices = () => {
-    setShowPrices((s) => !s);
+  const handleSeePrices = (e) => {
+  e.stopPropagation();
+  setShowPrices((s) => !s);
+  };
+
+  const handlePriceSelect = (vehicle) => {
+  setSelectedVehicle(vehicle);
+  setShowPrices(false);
+  setShowLoading(true);
+
+  setTimeout(() => {
+    setShowLoading(false);
+    setSelectedVehicle("");
+  }, 8000);
+  };
+
+  const handleCancelLoading = () => {
+  setShowLoading(false);
+  setSelectedVehicle("");
   };
 
   const handleLoginNavigate = () => {
@@ -55,7 +75,25 @@ export default function HeroSection() {
     } else {
       navigate("/rider");
     }
-  };
+
+  if (!showLoading) return;
+
+  const messages = [
+    "Stay tuned",
+    "Connecting to nearby drivers",
+    "A few more minutes",
+    "Almost there",
+    "We'll notify you soon",
+  ];
+
+  let index = 0;
+  const interval = setInterval(() => {
+    index = (index + 1) % messages.length;
+    setLoadingMessage(messages[index]);
+  }, 2500);
+
+  return () => clearInterval(interval);
+  }, [showLoading];
 
   return (
     <section className="hero-section">
@@ -148,28 +186,29 @@ export default function HeroSection() {
                         aria-label="Price options"
                       >
                         <div className="price-menu-group">
-                          <div className="price-item">
-                            <div className="vehicle">Bike</div>
-                            <div className="price">₹175</div>
-                          </div>
-                          <div className="price-item">
-                            <div className="vehicle">Bike Saver</div>
-                            <div className="price">₹150</div>
-                          </div>
-                          <div className="price-item">
-                            <div className="vehicle">Hatchback</div>
-                            <div className="price">₹250</div>
-                          </div>
-                          <div className="price-item">
-                            <div className="vehicle">Sedan</div>
-                            <div className="price">₹300</div>
-                          </div>
-                          <div className="price-item">
-                            <div className="vehicle">Premium</div>
-                            <div className="price">₹700</div>
-                          </div>
+                          {[
+                            { vehicle: "Bike", price: "₹175" },
+                            { vehicle: "Bike Saver", price: "₹150" },
+                            { vehicle: "Hatchback", price: "₹250" },
+                            { vehicle: "Sedan", price: "₹300" },
+                            { vehicle: "Premium", price: "₹700" },
+                          ].map((item, idx) => (
+                            <div
+                              key={idx}
+                              className="price-item"
+                              onClick={() => handlePriceSelect(item.vehicle)}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <div className="vehicle">{item.vehicle}</div>
+                              <div className="price">{item.price}</div>
+                            </div>
+                          ))}
                         </div>
-                        <div className="price-item">
+                        <div
+                          className="price-item"
+                          onClick={() => handlePriceSelect("Rentals")}
+                          style={{ cursor: "pointer" }}
+                        >
                           <div className="vehicle">Rentals (per hour)</div>
                           <div className="price">₹1,200</div>
                         </div>
@@ -219,6 +258,61 @@ export default function HeroSection() {
           />
         </div>
       </div>
+      
+      {/* Loading Dialog */}
+      
+      {showLoading && (
+        <div className="loading-overlay" onClick={handleCancelLoading}>
+          <div className="loading-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="loading-bars">
+              <div className="loading-bar">
+                <div className="loading-bar-fill" />
+              </div>
+              <div className="loading-bar">
+                <div className="loading-bar-fill" />
+              </div>
+              <div className="loading-bar">
+                <div className="loading-bar-fill" />
+              </div>
+              <div className="loading-bar">
+                <div className="loading-bar-fill" />
+              </div>
+            </div>
+            <div className="loading-message">{loadingMessage}</div>
+            <div className="loading-submessage">
+              We're connecting you with nearby {selectedVehicle} drivers.
+              <br />
+              This usually takes a few moments.
+            </div>
+            <button
+              type="button"
+              className="loading-cancel-btn"
+              onClick={handleCancelLoading}
+            >
+              Cancel request
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* LinkedIn Ad */}
+      <div className="linkedin-ad">
+        <div className="linkedin-icon">in</div>
+        <div className="linkedin-title">Connect with the Developer</div>
+        <div className="linkedin-description">
+          Follow my journey in building amazing web experiences and connect with me on LinkedIn
+        </div>
+        
+          href="https://www.linkedin.com/in/keshavbansll/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button type="button" className="linkedin-btn">
+            Visit LinkedIn Profile
+          </button>
+        </a>
+      </div>
+    </section>
     </section>
   );
 }
