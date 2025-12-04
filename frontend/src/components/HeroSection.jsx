@@ -1,5 +1,4 @@
-// HeroSection.jsx
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HeroSection.css";
 import MapComponent from "./MapComponent";
@@ -16,6 +15,7 @@ export default function HeroSection() {
   const [showLoading, setShowLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Stay tuned");
   const [selectedVehicle, setSelectedVehicle] = useState("");
+  const [selectedFare, setSelectedFare] = useState(null);
 
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -53,20 +53,87 @@ export default function HeroSection() {
     setShowPrices((s) => !s);
   };
 
-  const handlePriceSelect = (vehicle) => {
+  // Haversine formula to compute distance between two lat/lng pairs in kilometers
+  function getDistanceKm(a, b) {
+    if (!a || !b) return 0;
+    const toRad = (deg) => (deg * Math.PI) / 180;
+    const R = 6371; // Earth radius km
+    const dLat = toRad(b.lat - a.lat);
+    const dLon = toRad(b.lng - a.lng);
+    const lat1 = toRad(a.lat);
+    const lat2 = toRad(b.lat);
+
+    const sinDLat = Math.sin(dLat / 2);
+    const sinDLon = Math.sin(dLon / 2);
+    const hav =
+      sinDLat * sinDLat +
+      Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon;
+    const c = 2 * Math.atan2(Math.sqrt(hav), Math.sqrt(1 - hav));
+    return R * c;
+  }
+
+  // Rates per km
+  const RATES_PER_KM = {
+    Bike: 13,
+    "Bike Saver": 11,
+    Hatchback: 18,
+    Sedan: 22,
+    Premium: 45,
+  };
+
+  // Compute distance and fares when coords change
+  const { distanceKm, distanceText, computedFares } = useMemo(() => {
+    let dist = 0;
+    if (pickupCoords && dropoffCoords) {
+      dist = getDistanceKm(pickupCoords, dropoffCoords);
+    }
+    const distRounded = Math.max(0, dist);
+    const distText = distRounded ? `${distRounded.toFixed(1)} km` : null;
+
+    // If we have a real distance, compute dynamic fares; otherwise use fallback static prices
+    const fares = [];
+    if (distRounded > 0.05) {
+      Object.entries(RATES_PER_KM).forEach(([vehicle, rate]) => {
+        // compute fare, round up to nearest rupee
+        const fare = Math.max(1, Math.ceil(distRounded * rate));
+        fares.push({ vehicle, price: `₹${fare}`, rawFare: fare });
+      });
+      // Rentals treated separately as hourly fixed rate
+      fares.push({ vehicle: "Rentals", price: "₹1,200 (per hour)", rawFare: 1200 });
+    } else {
+      // fallback static list when coords are unavailable or same location
+      fares.push({ vehicle: "Bike", price: "₹175", rawFare: 175 });
+      fares.push({ vehicle: "Bike Saver", price: "₹150", rawFare: 150 });
+      fares.push({ vehicle: "Hatchback", price: "₹250", rawFare: 250 });
+      fares.push({ vehicle: "Sedan", price: "₹300", rawFare: 300 });
+      fares.push({ vehicle: "Premium", price: "₹700", rawFare: 700 });
+      fares.push({ vehicle: "Rentals", price: "₹1,200 (per hour)", rawFare: 1200 });
+    }
+
+    return {
+      distanceKm: distRounded,
+      distanceText: distText,
+      computedFares: fares,
+    };
+  }, [pickupCoords, dropoffCoords]);
+
+  const handlePriceSelect = (vehicle, fare) => {
     setSelectedVehicle(vehicle);
+    setSelectedFare(fare ?? null);
     setShowPrices(false);
     setShowLoading(true);
 
     setTimeout(() => {
       setShowLoading(false);
       setSelectedVehicle("");
+      setSelectedFare(null);
     }, 8000);
   };
 
   const handleCancelLoading = () => {
     setShowLoading(false);
     setSelectedVehicle("");
+    setSelectedFare(null);
   };
 
   const handleLoginNavigate = () => {
@@ -120,15 +187,12 @@ export default function HeroSection() {
     }
 
     function onPointerDown(e) {
-      // Only start drag from handle or the ad itself
-      // prevent default to avoid page scroll while dragging on touch
       e.preventDefault();
       el.setPointerCapture(e.pointerId);
       dragging = true;
       el.classList.add("dragging");
 
       const rect = el.getBoundingClientRect();
-      // switch to explicit left/top so the element can be moved
       el.style.left = `${rect.left}px`;
       el.style.top = `${rect.top}px`;
       el.style.right = "auto";
@@ -152,7 +216,6 @@ export default function HeroSection() {
       const newLeft = elStartLeft + dx;
       const newTop = elStartTop + dy;
 
-      // keep within viewport with small margin
       const margin = 8;
       const vw = window.innerWidth;
       const vh = window.innerHeight;
@@ -180,7 +243,6 @@ export default function HeroSection() {
       window.removeEventListener("pointercancel", onPointerUp);
     }
 
-    // Attach pointerdown on the drag handle and on the ad container to start drag
     const handle = el.querySelector(".linkedin-drag-handle") || el;
     handle.addEventListener("pointerdown", onPointerDown, { passive: false });
 
@@ -282,32 +344,30 @@ export default function HeroSection() {
                         role="dialog"
                         aria-label="Price options"
                       >
+                        {distanceText && (
+                          <div style={{ marginBottom: 8, fontSize: 13, color: "#6b6b6b" }}>
+                            Distance: {distanceText} • rates shown are estimates
+                          </div>
+                        )}
                         <div className="price-menu-group">
-                          {[
-                            { vehicle: "Bike", price: "₹175" },
-                            { vehicle: "Bike Saver", price: "₹150" },
-                            { vehicle: "Hatchback", price: "₹250" },
-                            { vehicle: "Sedan", price: "₹300" },
-                            { vehicle: "Premium", price: "₹700" },
-                          ].map((item, idx) => (
+                          {computedFares.map((item, idx) => (
                             <div
                               key={idx}
                               className="price-item"
-                              onClick={() => handlePriceSelect(item.vehicle)}
+                              onClick={() => handlePriceSelect(item.vehicle, item.rawFare)}
                               style={{ cursor: "pointer" }}
+                              role="button"
+                              tabIndex={0}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  handlePriceSelect(item.vehicle, item.rawFare);
+                                }
+                              }}
                             >
                               <div className="vehicle">{item.vehicle}</div>
                               <div className="price">{item.price}</div>
                             </div>
                           ))}
-                        </div>
-                        <div
-                          className="price-item"
-                          onClick={() => handlePriceSelect("Rentals")}
-                          style={{ cursor: "pointer" }}
-                        >
-                          <div className="vehicle">Rentals (per hour)</div>
-                          <div className="price">₹1,200</div>
                         </div>
                       </div>
                     )}
@@ -348,9 +408,7 @@ export default function HeroSection() {
           <MapComponent
             markers={[
               pickupCoords ? { coords: pickupCoords, variant: "pickup" } : null,
-              dropoffCoords
-                ? { coords: dropoffCoords, variant: "dropoff" }
-                : null,
+              dropoffCoords ? { coords: dropoffCoords, variant: "dropoff" } : null,
             ].filter(Boolean)}
           />
         </div>
@@ -376,7 +434,8 @@ export default function HeroSection() {
             </div>
             <div className="loading-message">{loadingMessage}</div>
             <div className="loading-submessage">
-              We're connecting you with nearby {selectedVehicle} drivers.
+              We're connecting you with nearby {selectedVehicle}
+              {selectedFare ? ` drivers. Estimated fare: ₹${selectedFare}` : " drivers."}
               <br />
               This usually takes a few moments.
             </div>
@@ -403,8 +462,7 @@ export default function HeroSection() {
         </div>
         <div className="linkedin-body">
           <div className="linkedin-title">Connect with the Developer</div>
-          <div className="linkedin-description">
-          </div>
+          <div className="linkedin-description"></div>
           <a
             className="linkedin-link"
             href="https://www.linkedin.com/in/keshavbansll/"
